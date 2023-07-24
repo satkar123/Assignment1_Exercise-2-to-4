@@ -1,0 +1,67 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.HashMap;
+
+public class RoundRobinScheduler {
+    private Stack<String> scheduleStack;
+    private Queue<String> datingQueue;
+
+    public RoundRobinScheduler() {
+        scheduleStack = new Stack<>();
+        datingQueue = new LinkedList<>();
+    }
+
+    public void addLadyFriend(String ladyFriend) {
+        datingQueue.add(ladyFriend);
+    }
+
+    public void generateSchedule() {
+        int numLadyFriends = datingQueue.size();
+        int numDays = numLadyFriends * 2;  // Each lady friend gets two dates
+
+        // Create a HashMap to track the number of times each lady friend is scheduled
+        HashMap<String, Integer> scheduleCount = new HashMap<>();
+        for (String ladyFriend : datingQueue) {
+            scheduleCount.put(ladyFriend, 0);
+        }
+
+        for (int day = 1; day <= numDays; day++) {
+            String currentLadyFriend = datingQueue.poll();
+            scheduleStack.push(currentLadyFriend);
+
+            if (day % numLadyFriends == 0) {
+                while (!scheduleStack.isEmpty()) {
+                    String scheduledLadyFriend = scheduleStack.pop();
+                    System.out.println("Day " + day + ": John is dating " + scheduledLadyFriend);
+
+                    // Update the schedule count for the current lady friend
+                    scheduleCount.put(scheduledLadyFriend, scheduleCount.get(scheduledLadyFriend) + 1);
+
+                    datingQueue.add(scheduledLadyFriend);
+                }
+            }
+        }
+
+        // Print the schedule count for each lady friend
+        System.out.println("\nSchedule Count for Each Lady Friend:");
+        for (String ladyFriend : scheduleCount.keySet()) {
+            int count = scheduleCount.get(ladyFriend);
+            System.out.println(ladyFriend + ": " + count + " times");
+        }
+    }
+
+    public static void main(String[] args) {
+        RoundRobinScheduler scheduler = new RoundRobinScheduler();
+
+        // Add lady friends to the scheduler
+        scheduler.addLadyFriend("Friend 1");
+        scheduler.addLadyFriend("Friend 2");
+        scheduler.addLadyFriend("Friend 3");
+        scheduler.addLadyFriend("Friend 4");
+        scheduler.addLadyFriend("Friend 5");
+
+        // Generate and print the schedule
+        scheduler.generateSchedule();
+    }
+}
