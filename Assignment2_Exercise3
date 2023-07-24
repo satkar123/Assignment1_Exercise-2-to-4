@@ -1,0 +1,70 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Athlete {
+
+    String name;
+    int age;
+    int runningDistanceEachDay;
+
+    public Athlete(String name, int age, int runningDistanceEachDay) {
+        this.name = name;
+        this.age = age;
+        this.runningDistanceEachDay = runningDistanceEachDay;
+    }
+}
+
+class QueueManager {
+    private Queue<Athlete> queue;
+
+    public QueueManager() {
+        queue = new LinkedList<>();
+    }
+
+    public void enqueue(Athlete athlete) {
+        queue.add(athlete);
+    }
+
+    public Athlete dequeue() {
+        return queue.poll();
+    }
+
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+
+    public int size() {
+        return queue.size();
+    }
+
+    public Athlete peek() {
+        return queue.peek();
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+        QueueManager athleteQueue = new QueueManager();
+
+        // Enqueuing athletes
+        for (int i = 1; i <= 10; i++) {
+            Athlete athlete = new Athlete("Athlete " + i, 25 + i, 5 + i);
+            athleteQueue.enqueue(athlete);
+        }
+
+        System.out.println("Queue size: " + athleteQueue.size());
+
+        // Printing details of each athlete in the queue
+        printAthleteDetails(athleteQueue);
+    }
+
+    // Method to iterate over the Queue and print details of Each Athlete
+    public static void printAthleteDetails(QueueManager queue) {
+        System.out.println("Details of athletes in the queue:");
+        while (!queue.isEmpty()) {
+            Athlete athlete = queue.dequeue();
+            System.out.println("Name: " + athlete.name + ", Age: " + athlete.age + ", Running Distance: " + athlete.runningDistanceEachDay);
+        }
+    }
+}
